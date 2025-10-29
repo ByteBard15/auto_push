@@ -8,7 +8,7 @@ import (
     "path/filepath"
 )
 
-const lastPushFile = ".last_push"
+const lastPushFile = "last_push"
 func main() {
 	repoDir, _ := os.Getwd()
 	pushFilePath := filepath.Join(repoDir, lastPushFile)
