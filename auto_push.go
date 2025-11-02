@@ -44,20 +44,30 @@ func updateLastPush(path string) {
 }
 
 func gitPush(repoDir string) error {
-	cmds := [][]string{
-		{"git", "add", "."},
-		{"git", "commit", "-m", fmt.Sprintf("Auto backup: %s", time.Now().Format("2006-01-02 15:04:05"))},
-		{"git", "push"},
-	}
+    addCmd := exec.Command("git", "add", ".")
+    addCmd.Dir = repoDir
+    addCmd.Stdout = os.Stdout
+    addCmd.Stderr = os.Stderr
+    if err := addCmd.Run(); err != nil {
+        return err
+    }
 
-	for _, args := range cmds {
-		cmd := exec.Command(args[0], args[1:]...)
-		cmd.Dir = repoDir
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-		if err := cmd.Run(); err != nil {
-			return err
-		}
-	}
+    commitCmd := exec.Command("git", "commit", "-m", fmt.Sprintf("Auto backup: %s", time.Now().Format("2006-01-03 15:04:05")))
+    commitCmd.Dir = repoDir
+    commitCmd.Stdout = os.Stdout
+    commitCmd.Stderr = os.Stderr
+    if err := commitCmd.Run(); err != nil {
+        msg := err.Error()
+        fmt.Println(msg)
+        return err
+    }
+    
+    pushCmd := exec.Command("git", "push")
+    pushCmd.Dir = repoDir
+    pushCmd.Stdout = os.Stdout
+    pushCmd.Stderr = os.Stderr
+    if err := pushCmd.Run(); err != nil {
+        return err
+    }
 	return nil
 }
