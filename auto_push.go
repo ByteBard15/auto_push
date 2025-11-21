@@ -37,7 +37,7 @@ func shouldPush(path string) bool {
     if err != nil {
         return true
     }
-    return time.Since(lastTime) >= 24*time.Hour
+    return time.Since(lastTime) >= 6*time.Hour
 }
 
 func updateLastPush(path string) {
